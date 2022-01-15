@@ -1,9 +1,9 @@
 import React from 'react';
 import { Typography } from '@mui/material';
 
-function TodoCounter() {
+function TodoCounter({completedTodos, totalTodos}) {
     return (
-        <Typography variant="h5" align="center">Has completado 2 de 3 TODOs</Typography>
+        <Typography variant="h5" align="center">Has completado {completedTodos} de {totalTodos} TODOs</Typography>
     );
 }
 

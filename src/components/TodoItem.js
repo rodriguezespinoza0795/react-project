@@ -11,6 +11,8 @@ import ListItemText from '@mui/material/ListItemText';
 
 
 function TodoItem(props) {
+    const OnComplete = () => console.log('tarea Completada')
+
     return (
         <ListItem
             secondaryAction={
@@ -25,6 +27,7 @@ function TodoItem(props) {
                     <Checkbox
                         edge="start"
                         checked={props.completed}
+                        onClick={OnComplete}
                     />
                 </ListItemIcon>
                 <ListItemText primary={props.text} />
