@@ -10,13 +10,14 @@ import ListItemText from '@mui/material/ListItemText';
 
 
 
-function TodoItem(props) {
-    const OnComplete = () => console.log('tarea Completada')
-
+function TodoItem({ completed, text, onComplete, onDelete }) {
     return (
         <ListItem
             secondaryAction={
-                <IconButton edge="end" aria-label="delete">
+                <IconButton
+                    edge="end"
+                    aria-label="delete"
+                    onClick={() => onDelete(text)}>
                     <DeleteIcon />
                 </IconButton>
             }
@@ -26,11 +27,11 @@ function TodoItem(props) {
                 <ListItemIcon>
                     <Checkbox
                         edge="start"
-                        checked={props.completed}
-                        onClick={OnComplete}
+                        checked={completed}
+                        onClick={() => onComplete(text)}
                     />
                 </ListItemIcon>
-                <ListItemText primary={props.text} />
+                <ListItemText primary={text} />
             </ListItemButton>
         </ListItem>
 

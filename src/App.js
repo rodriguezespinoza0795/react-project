@@ -6,8 +6,6 @@ import { TodoSearch } from './components/TodoSearch';
 import { CreateTodoButton } from './components/CreateTodoButton';
 import Container from '@mui/material/Container';
 
-
-
 const defaultTodos = [
   { text: 'Cortar cebolla', completed: false },
   { text: 'Tomar el curso de intro a React', completed: true },
@@ -24,16 +22,34 @@ const defaultTodos = [
 ]
 
 function App() {
-  const [query, setQuery] = useState("");
   const [todos, setTodos] = useState(defaultTodos);
+  const [query, setQuery] = useState("");
   const [searchedTodos, setSearchedTodos] = useState(defaultTodos);
-  const completedTodos = todos.filter( todo => todo.completed).length
-  const totalTodos = todos.length
+  const completedTodos = todos.filter(todo => todo.completed).length;
+  const totalTodos = todos.length;
 
   useEffect(() => {
-    const timeOutId = setTimeout(() => setSearchedTodos(query.length == 0 ? todos: todos.filter( ({text}) => text.toLowerCase().includes(query.toLowerCase()))), 500);
+    const timeOutId = setTimeout(() =>
+      setSearchedTodos(query.length === 0 ? todos : todos.filter(({ text }) => text.toLowerCase().includes(query.toLowerCase())))
+      , 500);
     return () => clearTimeout(timeOutId);
-  }, [query]);
+  }, [query, todos]);
+
+  const searchIndex = (text) => todos.findIndex(todo => todo.text === text);
+
+  const completeTodo = (text) => {
+    const todoIndex = searchIndex(text);
+    const newTodos = [...todos];
+    newTodos[todoIndex].completed = !newTodos[todoIndex].completed;
+    setTodos(newTodos);
+  };
+
+  const deleteTodo = (text) => {
+    const todoIndex = searchIndex(text);
+    const newTodos = [...todos];
+    newTodos.splice(todoIndex, 1);
+    setTodos(newTodos);
+  };
 
   return (
     <Container maxWidth="sm">
@@ -47,7 +63,13 @@ function App() {
       />
       <TodoList>
         {searchedTodos.map((item, index) => (
-          <TodoItem key={index} text={item.text} completed={item.completed} />
+          <TodoItem
+            key={index}
+            text={item.text}
+            completed={item.completed}
+            onComplete={completeTodo}
+            onDelete={deleteTodo}
+          />
         ))}
       </TodoList>
       <CreateTodoButton />
