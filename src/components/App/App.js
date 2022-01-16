@@ -3,31 +3,23 @@ import AppTemplate from './App.template'
 import useLocalStorage from "../../customHooks/useLocalStorage";
 
 function App() {
-  const [todos, saveTodos] = useLocalStorage('TODOS_V1', []);
-  const [searchedTodos, setSearchedTodos] = useLocalStorage('TODOS_V1', []);
+  const { item: todos, saveItem: saveTodos, loading, error, } = useLocalStorage('TODOS_V1', []);
   const [query, setQuery] = useState("");
 
   const completedTodos = todos.filter(todo => todo.completed).length;
   const totalTodos = todos.length;
 
-  useEffect(() => {
-    const timeOutId = setTimeout(() =>
-      setSearchedTodos(query.length === 0 ? todos : todos.filter(({ text }) => text.toLowerCase().includes(query.toLowerCase())))
-      , 500);
-    return () => clearTimeout(timeOutId);
-  }, [query, todos]);
-
-  const searchIndex = (text) => todos.findIndex(todo => todo.text === text);
+  const searchedTodos = todos.filter(todo => todo.text.toLowerCase().includes(query.toLowerCase()));
 
   const completeTodo = (text) => {
-    const todoIndex = searchIndex(text);
+    const todoIndex = todos.findIndex(todo => todo.text === text);
     const newTodos = [...todos];
     newTodos[todoIndex].completed = !newTodos[todoIndex].completed;
     saveTodos(newTodos);
   };
 
   const deleteTodo = (text) => {
-    const todoIndex = searchIndex(text);
+    const todoIndex = todos.findIndex(todo => todo.text === text);
     const newTodos = [...todos];
     newTodos.splice(todoIndex, 1);
     saveTodos(newTodos);
@@ -42,6 +34,8 @@ function App() {
       searchedTodos={searchedTodos}
       completeTodo={completeTodo}
       deleteTodo={deleteTodo}
+      error={error}
+      loading={loading}
     />
   );
 }

@@ -6,7 +6,7 @@ import { TodoSearch } from '../TodoSearch/TodoSearch';
 import { CreateTodoButton } from '../CreateTodoButton/CreateTodoButton';
 import Container from '@mui/material/Container';
 
-function AppTemplate({ completedTodos, totalTodos, query, setQuery, searchedTodos, completeTodo, deleteTodo }) {
+function AppTemplate({ completedTodos, totalTodos, query, setQuery, searchedTodos, completeTodo, deleteTodo, error, loading }) {
     return (
         <Container maxWidth="sm">
             <TodoCounter
@@ -18,6 +18,9 @@ function AppTemplate({ completedTodos, totalTodos, query, setQuery, searchedTodo
                 setQuery={setQuery}
             />
             <TodoList>
+                {error && <p>Desespérate, hubo un error...</p>}
+                {loading && <p>Estamos cargando, no desesperes...</p>}
+                {(!loading && !searchedTodos.length) && <p>¡Crea tu primer TODO!</p>}
                 {searchedTodos.map((item, index) => (
                     <TodoItem
                         key={index}
