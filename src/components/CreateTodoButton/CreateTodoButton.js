@@ -1,13 +1,13 @@
 import React from 'react';
+import { TodoContext } from '../TodoContex'
 import { Button } from '@mui/material';
 
 function CreateTodoButton() {
-    const OnClickButton = () => console.log('Click')
-
+    const { handleOpen } = React.useContext(TodoContext);
     return (
         <Button 
         variant="contained"
-        onClick={OnClickButton}
+            onClick={handleOpen}
         fullWidth>
             Create New Task
         </Button>

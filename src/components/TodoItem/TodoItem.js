@@ -8,8 +8,6 @@ import Checkbox from '@mui/material/Checkbox';
 import ListItemText from '@mui/material/ListItemText';
 
 
-
-
 function TodoItem({ completed, text, onComplete, onDelete }) {
     return (
         <ListItem

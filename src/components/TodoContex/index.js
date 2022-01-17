@@ -26,6 +26,16 @@ function TodoProvider(props) {
         saveTodos(newTodos);
     };
 
+    const addTodo = (text) => {
+        const newTodos = [...todos];
+        newTodos.push({ completed: false, text })
+        saveTodos(newTodos);
+    };
+
+    const [open, setOpen] = React.useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+
     return (
         <TodoContext.Provider value={{
             completedTodos,
@@ -36,7 +46,11 @@ function TodoProvider(props) {
             completeTodo,
             deleteTodo,
             error,
-            loading
+            loading,
+            open,
+            handleOpen,
+            handleClose,
+            addTodo
         }}>
             {props.children}
         </TodoContext.Provider>
