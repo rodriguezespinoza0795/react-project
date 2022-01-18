@@ -1,10 +1,8 @@
 import React from 'react';
-import { TodoContext } from '../TodoContex'
 import TextField from '@mui/material/TextField';
 
 
-function TodoSearch() {
-    const { query, setQuery } = React.useContext(TodoContext);  
+function TodoSearch({ query, setQuery }) {
     const onSearchValueChange = (e) => {
         setQuery(e.target.value)
     }

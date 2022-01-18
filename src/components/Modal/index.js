@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Box, Button } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import { TodoContext } from '../TodoContex'
 import TextareaAutosize from '@mui/base/TextareaAutosize';
 
 const style = {
@@ -16,8 +15,7 @@ const style = {
     p: 4,
 };
 
-function BasicModal() {
-    const { handleClose, open, addTodo } = React.useContext(TodoContext);
+function BasicModal({ handleClose, open, addTodo }) {
     const [text, setText] = useState("");
     const handleSubmit = () => {
         addTodo(text)
