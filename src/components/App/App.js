@@ -30,10 +30,14 @@ function App() {
         error={error}
         loading={loading}
         searchedTodos={searchedTodos}
+        totalTodos={totalTodos}
+        query={query}
         onError={() => <p>Desespérate, hubo un error...</p>}
         onLoading={() => [...Array(7)].map((e, i) => (<TodoItemSkeleton key={i} />))}
         onEmptyTodos={() => <p>¡Crea tu primer TODO!</p>}
-        render={todo => (
+        onEmptySearchResults={(searchText) => <p>No hay resultados de tasks para {searchText}</p>}
+      >
+        {todo => (
           <TodoItem
             key={todo.text}
             text={todo.text}
@@ -42,7 +46,7 @@ function App() {
             onDelete={() => deleteTodo(todo.text)}
           />
         )}
-      />
+      </TodoList>
       <BasicModal
         handleClose={handleClose}
         open={open}
