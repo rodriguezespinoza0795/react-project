@@ -9,7 +9,7 @@ import { TodoHeader } from '../TodoHeader/TodoHeader';
 import Container from '@mui/material/Container';
 import { BasicModal } from '../Modal';
 import { CreateTodoButton } from '../CreateTodoButton/CreateTodoButton';
-import { ChangeAlertWithStorageListener } from '../ChangeAlert';
+import { ChangeAlert } from '../ChangeAlert';
 
 
 
@@ -59,7 +59,7 @@ function App() {
       <CreateTodoButton
         handleOpen={handleOpen}
       />
-      <ChangeAlertWithStorageListener
+      <ChangeAlert
         sincronize={sincronizeTodos} />
     </Container>
   );

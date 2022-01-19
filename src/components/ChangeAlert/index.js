@@ -1,9 +1,7 @@
 import React from 'react'
-import { withStorageListener } from './withStorageListener';
+import { useStorageListener } from '../../customHooks/useStorageListener';
 import { Box, Button } from '@mui/material';
-import Modal from '@mui/material/Modal';
 import Typography from '@mui/material/Typography';
-import zIndex from '@mui/material/styles/zIndex';
 
 const style = {
 
@@ -18,7 +16,8 @@ const style = {
 };
 
 
-function ChangeAlert({ show, toggleShow }) {
+function ChangeAlert({ sincronize }) {
+    const { show, toggleShow } = useStorageListener(sincronize)
     if (show) {
         return (
             <Box sx={style}>
@@ -39,6 +38,4 @@ function ChangeAlert({ show, toggleShow }) {
     }
 }
 
-const ChangeAlertWithStorageListener = withStorageListener(ChangeAlert)
-
-export { ChangeAlertWithStorageListener }
+export { ChangeAlert }
