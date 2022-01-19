@@ -9,11 +9,12 @@ import { TodoHeader } from '../TodoHeader/TodoHeader';
 import Container from '@mui/material/Container';
 import { BasicModal } from '../Modal';
 import { CreateTodoButton } from '../CreateTodoButton/CreateTodoButton';
+import { ChangeAlertWithStorageListener } from '../ChangeAlert';
 
 
 
 function App() {
-  const { error, loading, searchedTodos, completeTodo, deleteTodo, completedTodos, totalTodos, query, setQuery, handleClose, open, addTodo, handleOpen } = useTodos();
+  const { error, loading, searchedTodos, completeTodo, deleteTodo, completedTodos, totalTodos, query, setQuery, handleClose, open, addTodo, handleOpen, sincronizeTodos } = useTodos();
   return (
     <Container maxWidth="sm">
       <TodoHeader
@@ -58,6 +59,8 @@ function App() {
       <CreateTodoButton
         handleOpen={handleOpen}
       />
+      <ChangeAlertWithStorageListener
+        sincronize={sincronizeTodos} />
     </Container>
   );
 }

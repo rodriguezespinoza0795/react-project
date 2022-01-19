@@ -10,7 +10,7 @@ function TodoList({ query, error, onError, loading, searchedTodos, onLoading, on
                     {loading && onLoading()}
                     {(!loading && !totalTodos) && onEmptyTodos()}
                     {(!!totalTodos && !searchedTodos.length) && onEmptySearchResults(query)}
-                    {searchedTodos.map(render || children)}
+                    {(!loading && !error) && searchedTodos.map(render || children)}
                 </List>
             </Paper>
         </Box >

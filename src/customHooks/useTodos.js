@@ -3,7 +3,7 @@ import useLocalStorage from "./useLocalStorage";
 
 
 function useTodos() {
-    const { item: todos, saveItem: saveTodos, loading, error, } = useLocalStorage('TODOS_V1', []);
+    const { item: todos, saveItem: saveTodos, loading, error, sincronizeItem: sincronizeTodos } = useLocalStorage('TODOS_V1', []);
     const [query, setQuery] = useState("");
 
     const completedTodos = todos.filter(todo => todo.completed).length;
@@ -48,7 +48,8 @@ function useTodos() {
         open,
         handleOpen,
         handleClose,
-        addTodo
+        addTodo,
+        sincronizeTodos
     }
 }
 
