@@ -2,23 +2,27 @@ import React from 'react';
 import { Button, TextField, Box, Typography } from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
 
+const SECURITY_CODE = 'paradigma'
 
 function UseState({ name }) {
-    const [error, setError] = React.useState(false)
-    const [loading, setLoading] = React.useState(false)
+    const [state, setState] = React.useState({
+        value: '',
+        error: false,
+        loading: false
+    });
 
+    console.log(state)
     React.useEffect(() => {
-        
-        if(loading)
-        setTimeout(() => {
-            setLoading(false)
-        }, 3000)
-    },[loading])
 
-    const handleButton = () => {
-        // setError(!error)
-        setLoading(true)
-    }
+        if (!!state.loading)
+        setTimeout(() => {
+              if (state.value === SECURITY_CODE) {
+                setState({...state,error: false,loading: false});
+              } else {
+                setState({...state,error: true,loading: false});
+              }
+        }, 3000)
+    }, [state.loading]);
 
     return (
         <Box sx={{margin: 2, py:5}}>
@@ -33,10 +37,12 @@ function UseState({ name }) {
             Por favor, escribe el código de seguridad.
             </Typography>
             <TextField 
-                label="Código de Seguridad" 
+                label="Código de Seguridad"
+                value={state.value}
+                onChange={(e) => setState({...state, value:e.target.value})}
                 fullWidth
                 />
-            {loading ?
+            {state.loading ?
                 <LoadingButton 
                 loading
                 variant="contained"
@@ -46,13 +52,13 @@ function UseState({ name }) {
             :
                 <Button
                 variant="contained"
-                onClick={handleButton}
+                onClick={() => setState({...state,loading: true})}
                 fullWidth>
                 Comprobar
                 </Button>
             }
             
-            {error && (
+            {state.error && (
                 <Typography
                 variant="h6"
                 align="center"
