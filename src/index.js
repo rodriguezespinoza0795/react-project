@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './components/App/App';
+import App from './estados-proyect/App';
 
 ReactDOM.render(
-  <App />,
+  <App/>,
   document.getElementById('root')
 );
