@@ -16,7 +16,9 @@ function App() {
   const { error, loading, searchedTodos, completeTodo, deleteTodo, completedTodos, totalTodos, query, setQuery, handleClose, open, addTodo, handleOpen } = useTodos();
   return (
     <Container maxWidth="sm">
-      <TodoHeader>
+      <TodoHeader
+        loading={loading}
+      >
         <TodoCounter
           completedTodos={completedTodos}
           totalTodos={totalTodos}
