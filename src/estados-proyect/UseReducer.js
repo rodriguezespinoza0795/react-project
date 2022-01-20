@@ -4,26 +4,13 @@ import LoadingButton from '@mui/lab/LoadingButton';
 
 const SECURITY_CODE = 'paradigma'
 
-function UseState({ name }) {
-    const [state, setState] = React.useState({
-        value: '',
-        error: false,
-        loading: false,
-        deleted:false,
-        confirmed:false
-    });
+function UseReducer({ name }) {
+    const [state, dispatch] = React.useReducer(reducer, initialState);
     
-    const onConfirm = () => setState({...state,error: false,loading: false,confirmed:true, value:''})
-    const onError = () => setState({...state,error: true,loading: false});
-    const onWrite = (e) => setState({...state, value:e.target.value})
-    const onCheck = () => setState({...state,loading: true})
-    const onDelete = () => setState({...state,deleted: true})
-    const onReset = () => setState({...state,confirmed: false,deleted: false})
-
     React.useEffect(() => {
         if (!!state.loading)
         setTimeout(() => {
-            state.value === SECURITY_CODE ? onConfirm() : onError()
+            state.value === SECURITY_CODE ? dispatch({type:'CONFIRM'}) : dispatch({type:'ERROR'})
         }, 3000)
     }, [state.loading]);
 
@@ -36,13 +23,13 @@ function UseState({ name }) {
                 type="Password"
                 label="Código de Seguridad"
                 value={state.value}
-                onChange={(e) => onWrite(e)}
+                onChange={(e) => dispatch({type:'WRITE', payload:e.target.value})}
                 fullWidth
                 />
             {state.loading ?
                 <LoadingButton loading variant="contained" fullWidth>LOADING</LoadingButton>
             :
-                <Button variant="contained" onClick={onCheck} fullWidth>Comprobar</Button>
+                <Button variant="contained" onClick={() => dispatch({type:'CHECK'})} fullWidth>Comprobar</Button>
             }
             
             {state.error && 
@@ -55,8 +42,8 @@ function UseState({ name }) {
                 <Typography variant="h4" align="center"> Eliminar {name}</Typography>
                 <Typography variant="h6" align="center"> ¿Seguro que quieres eliminar UseState?</Typography>
                 <Box sx={{ display: 'flex', justifyContent: 'space-evenly', mt: 2 }}>
-                    <Button variant="outlined" color="warning" onClick={onDelete}>Eliminar</Button>
-                    <Button variant="contained" onClick={onReset}>Volver</Button>
+                    <Button variant="outlined" color="warning" onClick={() => dispatch({type:'DELETE'})}>Eliminar</Button>
+                    <Button variant="contained" onClick={() => dispatch({type:'RESET'})}>Volver</Button>
                 </Box>
             </Box>
         )
@@ -65,11 +52,37 @@ function UseState({ name }) {
             <Box sx={{margin: 2, py:5}}>
                 <Typography variant="h4" align="center"> Eliminado con éxito </Typography>
                 <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
-                    <Button variant="contained" onClick={onReset}>Volver</Button>
+                    <Button variant="contained" onClick={() => dispatch({type:'RESET'})}>Volver</Button>
                 </Box>
             </Box>
         )
     }
   }
-  
-  export { UseState } ;
+
+
+const initialState = {
+    value: '',
+    error: false,
+    loading: false,
+    deleted:false,
+    confirmed:false
+}
+
+const reducerObject = (state, payload) => ({ 
+    CONFIRM :{...state,error: false,loading: false,confirmed:true, value:''},
+    ERROR : {...state,error: true,loading: false},
+    CHECK :{...state,loading: true},
+    DELETE :{...state,deleted: true},
+    RESET :{...state,confirmed: false,deleted: false},
+    WRITE :{...state, value: payload}
+})
+
+const reducer = (state, action) => {
+    if(reducerObject(state)[action.type]){
+        return reducerObject(state, action.payload)[action.type]
+    } else {
+        return state
+    }
+}
+
+export { UseReducer } ;
