@@ -6,11 +6,18 @@ const SECURITY_CODE = 'paradigma'
 
 function UseReducer({ name }) {
     const [state, dispatch] = React.useReducer(reducer, initialState);
-    
+
+    const onConfirm = () => dispatch({ type: actionTypes.CONFIRM })
+    const onError = () => dispatch({ type: 'ERROR' })
+    const onWrite = (e) => dispatch({ type: actionTypes.WRITE, payload: e.target.value })
+    const onCheck = () => dispatch({ type: actionTypes.CHECK })
+    const onDelete = () => dispatch({ type: actionTypes.DELETE })
+    const onReset = () => dispatch({ type: actionTypes.RESET })
+
     React.useEffect(() => {
         if (!!state.loading)
         setTimeout(() => {
-            state.value === SECURITY_CODE ? dispatch({type:'CONFIRM'}) : dispatch({type:'ERROR'})
+            state.value === SECURITY_CODE ? onConfirm() : onError()
         }, 3000)
     }, [state.loading]);
 
@@ -23,13 +30,13 @@ function UseReducer({ name }) {
                 type="Password"
                 label="Código de Seguridad"
                 value={state.value}
-                onChange={(e) => dispatch({type:'WRITE', payload:e.target.value})}
+                onChange={onWrite}
                 fullWidth
                 />
             {state.loading ?
                 <LoadingButton loading variant="contained" fullWidth>LOADING</LoadingButton>
             :
-                <Button variant="contained" onClick={() => dispatch({type:'CHECK'})} fullWidth>Comprobar</Button>
+                <Button variant="contained" onClick={onCheck} fullWidth>Comprobar</Button>
             }
             
             {state.error && 
@@ -42,8 +49,8 @@ function UseReducer({ name }) {
                 <Typography variant="h4" align="center"> Eliminar {name}</Typography>
                 <Typography variant="h6" align="center"> ¿Seguro que quieres eliminar UseState?</Typography>
                 <Box sx={{ display: 'flex', justifyContent: 'space-evenly', mt: 2 }}>
-                    <Button variant="outlined" color="warning" onClick={() => dispatch({type:'DELETE'})}>Eliminar</Button>
-                    <Button variant="contained" onClick={() => dispatch({type:'RESET'})}>Volver</Button>
+                    <Button variant="outlined" color="warning" onClick={onDelete}>Eliminar</Button>
+                    <Button variant="contained" onClick={onReset}>Volver</Button>
                 </Box>
             </Box>
         )
@@ -52,7 +59,7 @@ function UseReducer({ name }) {
             <Box sx={{margin: 2, py:5}}>
                 <Typography variant="h4" align="center"> Eliminado con éxito </Typography>
                 <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
-                    <Button variant="contained" onClick={() => dispatch({type:'RESET'})}>Volver</Button>
+                    <Button variant="contained" onClick={onReset}>Volver</Button>
                 </Box>
             </Box>
         )
@@ -68,13 +75,22 @@ const initialState = {
     confirmed:false
 }
 
+const actionTypes = {
+    CONFIRM: 'CONFIRM',
+    ERROR: 'ERROR',
+    CHECK: 'CHECK',
+    DELETE: 'DELETE',
+    RESET: 'RESET',
+    WRITE: 'WRITE',
+}
+
 const reducerObject = (state, payload) => ({ 
-    CONFIRM :{...state,error: false,loading: false,confirmed:true, value:''},
-    ERROR : {...state,error: true,loading: false},
-    CHECK :{...state,loading: true},
-    DELETE :{...state,deleted: true},
-    RESET :{...state,confirmed: false,deleted: false},
-    WRITE :{...state, value: payload}
+    [actionTypes.CONFIRM]: { ...state, error: false, loading: false, confirmed: true, value: '' },
+    [actionTypes.ERROR]: { ...state, error: true, loading: false },
+    [actionTypes.CHECK]: { ...state, loading: true },
+    [actionTypes.DELETE]: { ...state, deleted: true },
+    [actionTypes.RESET]: { ...state, confirmed: false, deleted: false },
+    [actionTypes.WRITE]: { ...state, value: payload }
 })
 
 const reducer = (state, action) => {
